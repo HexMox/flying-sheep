@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+    <title>羊年抢红包!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="/bin/css/style.css">
+</head>
+<body>
+    <div class="area">
+        <!-- 引导界面 -->
+
+        <div class="init-container">
+            <img class="brand" src="/assets/brand.png">
+            <img class="start-btn" src="/assets/start-btn.png">
+            <img class="show-instruction-btn" src="/assets/show-instruction-btn.png">
+        </div>
+
+        <div class="instruction">
+            <div class="instruction-container">
+                <img src="/assets/prize.png">
+                <p>奖品设置：</p>
+                <ul>
+                    <li>特等奖：ipad一台</li>
+                    <li>特等奖：ipad一台</li>
+                    <li>特等奖：ipad一台</li>
+                </ul>
+                <p>参与要求：</p>
+                <ul>
+                    <li>每个用户可无限参与游戏，每天赠送两次抽奖机会</li>
+                </ul>
+                <p>领奖说明：</p>
+                <ul>
+                    <li>红包奖项直接发放至微信账号，其余奖品待定</li>
+                </ul>
+                <p>游戏说明：</p>
+                <ul>
+                    <li>a.玩家用手指触碰屏幕，可水平拖动钱袋，接住从天上掉下来的纸币,金币,金条,小白羊和小黑羊。接到纸币可+3分;接到金币可+5分;接到金条+10分;接到白羊，钱袋体积增大现有体积的0.5倍;接到灰羊，钱袋体积减小为现有体积的0.5倍。钱袋体积最大不超过初始体积的2倍</li>
+                    <li>b.每个用户初始有三颗心。接到炸弹消耗1颗心，3颗心用完，游戏结束</li>
+                    <li>c.获得总分超过288，即可获得一次抽奖机会</li>
+                </ul>
+                <h5>一切解释权归©中北明夷所有</h5>
+            </div>
+            <div class="instruction-back-btn"></div>
+        </div>
+
+        <div id="over" class="state">
+            <div class="over-fail">
+                <h1>游戏结束</h1>
+                <p>你本次的得分为<span class="score">0</span>分</p>
+                <p>还差<span class="distance">0</span>就可以参加抽奖咯</p>
+                <div class="again in-red-btn">再来一次</div>
+            </div>
+
+            <div class="over-succeed">
+                <h1>你的得分</h1>
+                <h2 class="score">0</h2>
+                <p class="bullshit">超过50%的兔玩家</p>
+                <div class="go-lottery in-red-btn">参与抽奖</div>
+            </div>
+
+            <div class="over-lottery-close">
+                <img class="open-reward-btn" src="/assets/close-precious-box.png">
+            </div>
+
+            <div class="over-lottery-open">
+                <div class="package">
+                    <img src="/assets/open-precious-box-top.png">
+                    <img src="/assets/open-precious-box-bottom.png">
+                </div>
+            </div>
+
+            <div class="congratulation">
+                <h1> 恭喜你获得 </h1>
+                <p class="reward">超级豪华暴爽无敌终极大礼包一份</p>
+                <div class="go-share in-red-btn">奔走相告</div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="left">
+                <img class="precious-box" src="/assets/precious-box.png">
+                <img class="score-bar" src="/assets/score-bar.png">
+                <span id="score">0</span>
+            </div>
+            <div class="right">
+                <img class="hp3" src="/assets/heart.png">
+                <img class="hp2" src="/assets/heart.png">
+                <img class="hp1" src="/assets/heart.png">
+            </div>
+        </div>
+
+        <div class="drops"></div>
+        <img class="bag" src="/assets/bag.png">
+
+    </div>
+
+    <script type="text/javascript" src="/bin/js/main.js"></script>
+    <script src="//localhost:35729/livereload.js"></script>
+    <script src="http://192.168.1.116:8080/target/target-script-min.js"></script>
+</body>
+</html>
