@@ -9,7 +9,8 @@
   "author": "Mox",
   "license": "ISC",
   "dependencies": {
-    "eventemitter2": "^0.4.14"
+    "eventemitter2": "^0.4.14",
+    "jquery": "^2.1.3"
   },
   "devDependencies": {
     "grunt-browserify": "^3.3.0",
