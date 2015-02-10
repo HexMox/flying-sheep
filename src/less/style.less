@@ -1,0 +1,175 @@
+@btn-width: 60%;
+
+* {font-family: "微软雅黑", Arial;}
+
+.absolute-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+.background(@url) {
+    background-image: url(@url);
+    background-size: 100% 100%;
+}
+
+.area {
+    .absolute-center;
+    .background("/assets/background-with-ground.png");
+    overflow: hidden;
+
+    .init-container {
+        .absolute-center;
+        .background("/assets/init-background.png");
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        div {width: @btn-width; margin: 4% auto; position: relative;}
+        div img {width: 100%;}
+        div span {
+            .absolute-center;
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 26px;
+            height: 26px;
+            line-height: 26px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .brand {display: block; margin: 10% auto; width: 80%;}
+    }
+
+    .instruction {
+        .absolute-center;
+        .background("/assets/instruction-background.png");
+        z-index: 3;
+        width: 80%;
+        height: 70%;
+        display: none;
+        .instruction-container {
+            width: 80%;
+            height: 80%;
+            overflow-y: auto;
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 20%;
+            &::-webkit-scrollbar {display: none;}
+            img {width: 100%;}
+            ul {list-style: none; padding: 0;}
+            ul li {
+                margin: 10px 0;
+                font-size: 12px;
+                color: #eae294;
+            }
+        }
+        .instruction-back-btn {
+            margin: 0;
+            width: 50px;
+            height: 50px;
+            .background("/assets/instruction-back-btn.png");
+            position: absolute;
+            z-index: 4;
+            bottom: -20px;
+            left: -20px;
+        }
+    }
+
+    .header {
+        position: absolute;
+        z-index: 2;
+        display: none;
+        left: 12%;
+        top: 3.5%;
+        background-color: rgba(93,117,169,0.95);
+        border-radius: 20px;
+        width: 26%;
+        height: 20px;
+    }
+
+    .sheep {display: none; position: absolute; z-index: 2;}
+    .normal-sheep {.background("/assets/normal-sheep.png");}
+    .rising-sheep {.background("/assets/rising-sheep.png");}
+    .falling-sheep {.background("/assets/falling-sheep.png");}
+    .lightning-sheep {.background("/assets/lightning-sheep.png");}
+    .flutters-container {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        div {position: absolute;}
+        .white-cloud {.background("/assets/white-cloud.png");}
+        .empty-cloud {.background("/assets/empty-cloud.png");}
+        .black-cloud {.background("/assets/black-cloud.png");}
+        .red-packet {.background("/assets/red-packet.png");}
+    }
+
+    #over {
+        display: none;
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        &>div {
+            .absolute-center;
+            width: 80%;
+            height: 60%;
+            text-align: center;
+            background-image: url("/assets/over-background.png");
+            background-size: 100% 100%;
+        }
+        .in-red-btn {
+            width: 120px;
+            margin: 0 auto !important;
+            height: 50px;
+            font-size: 18px;
+            color: #fdffff;
+            line-height: 45px;
+            background-image: url("/assets/red-btn.png");
+            background-size: 100% 100%;
+            text-indent: 30px;
+        }
+        .over-fail {
+            display: none;
+            h1 {margin-top: 20%; font-size: 22px; color: #22161a;}
+            p {font-size:18px;color: #c4591b;}
+            span.score {font-size: 24px;}
+        }
+        .over-succeed {
+            display: none;
+            background-image: url("/assets/succeed-background.png");
+            * {margin: 0}
+            h1 {margin-top: 20%; font-size: 22px; color: #ca1d1d;}
+            h2 {margin-top: 8px; font-size: 24px; color: #c55a1b;}
+            p.bullshit {margin: 8px 0; font-size: 18px; font-weight: bold; color: #000;}
+        }
+        .over-lottery-close {
+            display: none;
+            img {
+                .absolute-center;
+                width: 50%;
+            }
+        }
+        .over-lottery-open {
+            display: none;
+            div {
+                .absolute-center;
+                width: 50%;
+                height: 50%;
+            }
+            img {
+                width: 100%;
+                position: relative;
+                // transition
+            }
+        }
+        .congratulation {
+            display: none;
+            h1 {margin-top: 20%; color: #c6211b; font-size: 22px;}
+            p {margin: 8px auto; color: #24181c; font-size: 18px; width: 80%;}
+        }
+    }
+
+}
