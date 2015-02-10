@@ -2,10 +2,12 @@ EventEmitter = require("eventemitter2").EventEmitter2
 Flutter = require("./flutter.coffee")
 config = require("./config.coffee")
 
-GRID_HEIGHT = config.GRID_HEIGHT
+DEFAULT_FLUTTER_WIDTH = config.DEFAULT_FLUTTER_WIDTH
+DEFAULT_FLUTTER_HEIGHT = config.DEFAULT_FLUTTER_HEIGHT
+OFFSET_X = config.WIDTH * config.SIDE_WALL_RATE / 2
 
 COLUMN_COUNT = config.COLUMN_COUNT
-RAW_COUNT = config.RAW_COUNT
+ROW_COUNT = config.ROW_COUNT
 KINDS = config.KINDS
 STRATEGY = config.STRATEGY
 
@@ -18,15 +20,22 @@ class Flutters extends EventEmitter
         @accumulateDis = 0
 
     init: (@$fluttersContainer)->
-        @flutters = []
+        @flutters = @getNewFlutters()
         @strategy = STRATEGY
-        @produce(RAW_COUNT)
+        @produce(ROW_COUNT)
 
     reset: ->
-        @flutters = []
+        @flutters = @getNewFlutters()
         @$fluttersContainer.innerHTML = ""
         @strategy = STRATEGY
         @accumulateDis = 0
+
+    getNewFlutters: ->
+        # flutters should cache 1 row that (ROW_COUNT+1)th row
+        flutters = []
+        for i in [1..ROW_COUNT+1]
+            flutters.push new Array(COLUMN_COUNT)
+        flutters
 
     produce: (rowsCount)->
         # pre produce one raw if maxtop not exceed grid height
@@ -36,37 +45,42 @@ class Flutters extends EventEmitter
             for col in cols
                 kind = @getRandomKind()
                 flutter = new Flutter(kind, row, col)
-                @flutters.push flutter
+                @flutters[row - 1][col - 1] = flutter
                 flutter.draw()
 
     fall: (distance)->
         @accumulateDis += distance
-        if @accumulateDis > GRID_HEIGHT
-            @produce 1
-            @accumulateDis -= GRID_HEIGHT
-            @emit 'rise-one-grid'
-        flutters = []
-        for flutter in @flutters
-            flutter.fall distance
-            if flutter.shouldRemove()
-                flutter.remove()
-            else
-                flutters.push flutter
+        flag = if @accumulateDis > DEFAULT_FLUTTER_HEIGHT then 1 else 0
+        flutters = @getNewFlutters()
+        for aRowFlutters, rowIndex in @flutters
+            for flutter, colIndex in aRowFlutters
+                if flutter
+                    flutter.fall distance
+                    if flutter.shouldRemove()
+                        flutter.remove()
+                    else
+                        if rowIndex + flag > ROW_COUNT
+                            # special remove
+                            flutter.remove()
+                        else
+                            flutters[rowIndex+flag][colIndex] = flutter
         @flutters = flutters
+        if flag
+            @produce 1
+            @accumulateDis -= DEFAULT_FLUTTER_HEIGHT 
 
     isOneBeTreaded: (sheeploc)->
-        one = null
-        flutters = []
-        for flutter in @flutters
-            # if one be treaded by sheep then remove it
-            # unless it is a black cloud(maybe)
-            if flutter.isBeTreaded(sheeploc)
-                flutter.remove() if flutter.kind isnt "black-cloud"
-                one = flutter
-            else
-                flutters.push flutter
-        @flutters = flutters
-        one
+        rowIndex = Math.floor(sheeploc.y/DEFAULT_FLUTTER_HEIGHT)
+        colIndex = Math.floor((sheeploc.x - OFFSET_X)/DEFAULT_FLUTTER_WIDTH)
+        return null if rowIndex > ROW_COUNT
+        flutter = @flutters[rowIndex][colIndex]
+        if flutter?.isBeTreaded(sheeploc)
+            if flutter.kind isnt "black-cloud"
+                flutter.remove()
+                @flutters[rowIndex][colIndex] = null
+        else
+            flutter = null
+        flutter
 
     getRandomProduceCount: ->
         left = right = 0

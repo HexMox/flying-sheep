@@ -38,6 +38,10 @@ game.on "init", ->
     initFlutters()
 
 game.on "start", ->
+    sheep.reset()
+    flutters.reset()
+    score = 0
+    seconds = 120
     $header.style.display = "block"
     $sheep.style.display = "block"
     $fluttersContainer.style.display = "block"
@@ -64,8 +68,8 @@ initDecorations = ->
 initSheep = ->
     sheep.init($sheep)
     sheep.on 'crash-bottom', ->
-        if decorations.state is "ground"
-            sheep.rerise()
+        if decorations.state is "ground" then sheep.rerise()
+        else sheep.emit 'game-over'
     sheep.on 'continuous-hit', (hits)->
         displayString = "none"
         displayString = "block" if hits > 0

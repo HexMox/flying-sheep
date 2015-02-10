@@ -8,7 +8,7 @@ WIDTH = config.WIDTH
 HEIGHT = config.HEIGHT
 
 ONE_RISE_HEIGHT = config.ONE_RISE_HEIGHT
-BASE_LINE = config.BASE_LINE
+BASE_LINE = config.STRATEGY.baseline
 
 DEFAULT_SHEEP_WIDTH = config.DEFAULT_SHEEP_WIDTH
 DEFAULT_SHEEP_HEIGHT = config.DEFAULT_SHEEP_HEIGHT
@@ -16,7 +16,7 @@ DEFAULT_X = (WIDTH - DEFAULT_SHEEP_WIDTH) / 2
 DEFAULT_Y = HEIGHT - DEFAULT_SHEEP_HEIGHT
 MIN_X = 0
 MAX_X = WIDTH - DEFAULT_SHEEP_WIDTH
-# assume rising need 1sec
+# assume rising need 1sec, ONE_RISE_HEIGHT = 180px
 G = 2 * ONE_RISE_HEIGHT / (60 * 60) 
 DEFAULT_UP_SPEED = -G * 60
 
@@ -49,7 +49,6 @@ class Sheep extends EventEmitter
         @continuousHitsCount = 0
         @vector = new Vector(0, DEFAULT_UP_SPEED, 0, G)
         @$sheep.className = "sheep normal-sheep"
-        @$sheep.style.transition = ""
         @rising = no
         @falling = no
         @died = no
@@ -75,11 +74,11 @@ class Sheep extends EventEmitter
         newy = @y + @vector.vy
         if @isFalling(@vector) then @fallSheep(newy)
         else
-            if newy < BASE_LINE then @fallFlutters(-@vector.vy)
+            if newy < BASE_LINE then flutters.fall -@vector.vy
             else @riseSheep(newy)
-        preVx = @vector.vx
+        # preVx = @vector.vx
         @vector.update()
-        @vector.ax = 0 if @vector.vx * preVx < 0
+        # @vector.ax = 0 if @vector.vx * preVx < 0
         @draw()
 
     riseSheep: (@y)->
@@ -87,14 +86,10 @@ class Sheep extends EventEmitter
         @rising = yes
         @falling = no
 
-    fallFlutters: (dis)->
-        flutters.fall dis
-
     fallSheep: (@y)->
         # @changeFace "falling-sheep" if @falling isnt yes
         @falling = yes
         @rising = no
-        @lasty = 0 # for cloud move
         flutter = flutters.isOneBeTreaded @getLoc()
         if flutter isnt null
             @trigger flutter
@@ -105,10 +100,8 @@ class Sheep extends EventEmitter
 
     getLoc: ->
         obj = 
-            x: @x
-            y: @y
-            width: @width
-            height: @height
+            x: @x + @width/2
+            y: @y + @height
 
     rerise: ->
         @vector.vy = DEFAULT_UP_SPEED
