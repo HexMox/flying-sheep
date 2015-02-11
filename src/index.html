@@ -23,6 +23,7 @@
         </div>
 
         <div class="instruction">
+            <div class="instruction-header">游戏说明</div>
             <div class="instruction-container">
                 <img src="/assets/prize.png">
                 <p>奖品设置：</p>
@@ -59,53 +60,110 @@
         </div>
 
         <div id="over" class="state">
-            <div class="over-fail">
-                <h1>游戏结束</h1>
-                <p>你本次的得分为<span class="score">0</span>分</p>
-                <p>还差<span class="distance">0</span>就可以参加抽奖咯</p>
-                <div class="again in-red-btn">再来一次</div>
-            </div>
+            <img class="gameover-brand" src="/assets/gameover.png">
 
-            <div class="over-succeed">
-                <h1>你的得分</h1>
-                <h2 class="score">0</h2>
-                <p class="bullshit">超过50%的兔玩家</p>
-                <div class="go-lottery in-red-btn">参与抽奖</div>
-            </div>
-
-            <div class="over-lottery-close">
-                <img class="open-reward-btn" src="">
-            </div>
-
-            <div class="over-lottery-open">
-                <div class="package">
-                    <img src="">
-                    <img src="">
+            <div class="over-container">
+                <img class="over-background" src="/assets/over-background.png">
+                <div>
+                    <h2>
+                        <span class="score">0</span>
+                        <span class="meter">m</span>
+                    </h2>
+                    <!-- <p class="line"></p> -->
+                    <p>最高纪录 <span class="highest-score">0</span>m</p>
                 </div>
             </div>
 
-            <div class="congratulation">
-                <h1> 恭喜你获得 </h1>
-                <p class="reward">超级豪华暴爽无敌终极大礼包一份</p>
-                <div class="go-share in-red-btn">奔走相告</div>
+            <div class="small-btn-group btn-group">
+                <img class="again-btn" src="/assets/again-btn.png">
+                <img class="share-btn" src="/assets/share-btn.png">
+                <div class="again">再来一次</div>
+                <div class="share">分享游戏</div>
+            </div>
+            <div class="big-btn-group btn-group">
+                <img class="lottery-btn" src="/assets/lottery-btn.png">
+                <img class="focus-btn" src="/assets/focus-btn.png">
+                <div class="lottery">我要抽奖</div>
+                <div class="focus">关注我们</div>
             </div>
         </div>
 
+        <div id="share">
+            <img src="/assets/share-instruction.png">
+        </div>
+
         <div class="header">
-            <img class="star" src="">
-            <img class="cross" src="">
+            <img class="star" src="/assets/star.png">
+            <span class="cross">X</span>
             <span class="score">0</span>
-            <img class="meter" src="">
+            <span class="meter">m</span>
+        </div>
+
+        <div class="decorations">
+            <img class="ground" src="/assets/ground.png">
+            <div class="time-bar">
+                <div class="bar"></div>
+            </div>
         </div>
 
         <div class="flutters-container"></div>
         <div class="sheep"></div>
-        <div class="continuous-hit">0</div>
+        <div class="continuous-hit-container">
+            <div class="word">连击</div>
+            <div class="continuous-hit">0</div>
+        </div>
 
     </div>
 
     <script type="text/javascript" src="/bin/js/main.js"></script>
     <!-- // <script src="//localhost:35729/livereload.js"></script> -->
     <!-- // <script src="http://192.168.1.116:8080/target/target-script-min.js"></script> -->
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+    function shareFriend() {
+        WeixinJSBridge.invoke('sendAppMessage',{
+            "img_url": imgUrl,
+            "img_width": "137",
+            "img_height": "200",
+            "link": lineLink,
+            "desc": descContent,
+            "title": shareTitle
+        }, function(res) {
+        });
+    }
+    function shareTimeline() {
+        WeixinJSBridge.invoke('shareTimeline',{
+            "img_url": imgUrl,
+            "img_width": "137",
+            "img_height": "200",
+            "link": lineLink,
+            "desc": descContent,
+            "title": shareTitle
+        }, function(res) {
+        });
+    }
+    function shareWeibo() {
+        WeixinJSBridge.invoke('shareWeibo',{
+            "content": descContent,
+            "url": lineLink
+        }, function(res) {
+        });
+    }
+    // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+            shareFriend();
+        });
+        // 分享到朋友圈
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+            shareTimeline();
+        });
+        // 分享到微博
+        WeixinJSBridge.on('menu:share:weibo', function(argv){
+            shareWeibo();
+        });
+    }, false);
+    </script>
 </body>
 </html>

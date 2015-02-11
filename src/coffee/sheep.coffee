@@ -8,7 +8,7 @@ WIDTH = config.WIDTH
 HEIGHT = config.HEIGHT
 
 ONE_RISE_HEIGHT = config.ONE_RISE_HEIGHT
-BASE_LINE = config.STRATEGY.baseline
+BASE_LINE = config.BASE_LINE
 
 DEFAULT_SHEEP_WIDTH = config.DEFAULT_SHEEP_WIDTH
 DEFAULT_SHEEP_HEIGHT = config.DEFAULT_SHEEP_HEIGHT
@@ -52,6 +52,7 @@ class Sheep extends EventEmitter
         @rising = no
         @falling = no
         @died = no
+        @$sheep.style.left = @$sheep.style.bottom = ""
 
     draw: ->
         @$sheep.style.webkitTransform = "translate3d(#{@x}px, #{@y}px, 0)"
@@ -76,9 +77,7 @@ class Sheep extends EventEmitter
         else
             if newy < BASE_LINE then flutters.fall -@vector.vy
             else @riseSheep(newy)
-        # preVx = @vector.vx
         @vector.update()
-        # @vector.ax = 0 if @vector.vx * preVx < 0
         @draw()
 
     riseSheep: (@y)->
@@ -93,9 +92,9 @@ class Sheep extends EventEmitter
         flutter = flutters.isOneBeTreaded @getLoc()
         if flutter isnt null
             @trigger flutter
-        if @y > DEFAULT_Y 
+        if @y >= DEFAULT_Y 
             @emit "crash-bottom"
-        if @y > HEIGHT
+        if @y >= HEIGHT
             @emit "game-over"
 
     getLoc: ->
@@ -120,7 +119,8 @@ class Sheep extends EventEmitter
             @$sheep.style.bottom = "#{HEIGHT-@y-@height}px"
             jquery(".sheep").animate
                 bottom: "#{-@height}px"
-            , 500, "swing"
+            , 500, "swing", =>
+                @emit "show-over"
         , 500
 
     rush: ->
@@ -138,6 +138,9 @@ class Sheep extends EventEmitter
                 @emit 'continuous-hit', @continuousHitsCount
             when "black-cloud" then @beLightninged()
             when "red-packet" then @rush()
+            else 
+                @continuousHitsCount = 0
+                @emit 'continuous-hit', @continuousHitsCount
 
     changeFace: (classname)->
         @$sheep.className = "sheep " + classname

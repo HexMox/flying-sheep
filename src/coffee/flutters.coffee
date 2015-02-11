@@ -15,20 +15,23 @@ class Flutters extends EventEmitter
     constructor: ->
         super @
         @flutters = null
+        @strategyIndex = 0
         @strategy = null
         @$fluttersContainer = null
         @accumulateDis = 0
 
     init: (@$fluttersContainer)->
         @flutters = @getNewFlutters()
-        @strategy = STRATEGY
+        @strategy = STRATEGY[@strategyIndex]
         @produce(ROW_COUNT)
 
     reset: ->
         @flutters = @getNewFlutters()
         @$fluttersContainer.innerHTML = ""
-        @strategy = STRATEGY
+        @strategyIndex = 0
+        @strategy = STRATEGY[@strategyIndex]
         @accumulateDis = 0
+        @produce(ROW_COUNT)
 
     getNewFlutters: ->
         # flutters should cache 1 row that (ROW_COUNT+1)th row
@@ -68,6 +71,7 @@ class Flutters extends EventEmitter
         if flag
             @produce 1
             @accumulateDis -= DEFAULT_FLUTTER_HEIGHT 
+            @emit 'rise-one-grid'
 
     isOneBeTreaded: (sheeploc)->
         rowIndex = Math.floor(sheeploc.y/DEFAULT_FLUTTER_HEIGHT)
@@ -110,5 +114,13 @@ class Flutters extends EventEmitter
                 return KINDS[index]
             left += right
         "black-cloud"
+
+    changeStrategy: (score)->
+        if score < 50 then @strategyIndex = 0
+        else if 50 <= score < 1500 then @strategyIndex = 1
+        else if 1500 <= score < 5000 then @strategyIndex = 2
+        else @strategyIndex = 3
+        @strategy = STRATEGY[@strategyIndex]
+
 
 module.exports = (new Flutters)

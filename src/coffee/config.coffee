@@ -1,3 +1,8 @@
+window.title = '羊气冲天，中北明夷给您拜年了'
+window.lineLink = location.origin + '/flyingsheep'
+window.imgUrl = lineLink + '/assets/normal-sheep.png'
+window.descContent = '...'
+
 AGENT = window.navigator.userAgent
 
 HEIGHT = document.documentElement.clientHeight
@@ -38,20 +43,35 @@ ROW_COUNT = Math.floor(HEIGHT / DEFAULT_FLUTTER_HEIGHT) - 1
 # 也是计时条和地面的高度
 TIME_BAR_HEIGHT = GROUND_HEIGHT = HEIGHT - GRID_HEIGHT * ROW_COUNT 
 # 每网格的米数
-METER_PER_GRID = 1
+METER_PER_GRID = 10
 # 羊正常跳的高度
 ONE_RISE_HEIGHT = 180
 # 将地面改成时间条的得分线
 GROUND_TO_TIME_BAR_SCORE = 50
+# 游戏时间
+SECONDS = 180
 
 # 产生漂浮物的策略
 KINDS = ["white-cloud", "empty-cloud", "black-cloud", "red-packet"]
 # 得分的基准线
 BASE_LINE = Math.floor(HEIGHT - ONE_RISE_HEIGHT - DEFAULT_SHEEP_HEIGHT) + 1
-STRATEGY =
-    amountProbilities: [0.6, 0.3, 0.1]
-    kindProbilities: [0.45, 0.3, 0.15, 0.1]
-    baseline: BASE_LINE
+STRATEGY = [{
+    # score 0-50
+    amountProbilities: [0.7, 0.2, 0.1]
+    kindProbilities: [0.8, 0.2, 0, 0]
+},{
+    # score 51-1500
+    amountProbilities: [0.7, 0.2, 0.1]
+    kindProbilities: [0.6, 0.15, 0.1, 0.15]
+},{
+    # score 1501-5000
+    amountProbilities: [0.7, 0.2, 0.1]
+    kindProbilities: [0.5, 0.25, 0.15, 0.1]
+},{
+    # score 5000up
+    amountProbilities: [0.7, 0.2, 0.1]
+    kindProbilities: [0.4, 0.35, 0.2, 0.05]
+}]
 
 config = 
     AGENT: AGENT
@@ -75,6 +95,10 @@ config =
 
     TIME_BAR_HEIGHT: TIME_BAR_HEIGHT
     GROUND_HEIGHT: GROUND_HEIGHT
+
+    BASE_LINE: BASE_LINE
+    GROUND_TO_TIME_BAR_SCORE: GROUND_TO_TIME_BAR_SCORE
+    SECONDS: SECONDS
 
     KINDS: KINDS
     STRATEGY: STRATEGY
